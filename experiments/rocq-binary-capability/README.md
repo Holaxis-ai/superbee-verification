@@ -56,13 +56,16 @@ python3 scripts/check_rocq_capability.py \
 ```
 
 The evidence directory must be new. `--validate-only` checks source identities without Docker
-and reports `inputs_validated_only`, never native acceptance. The container invokes the
-unchanged official commands in sequence:
+and reports `inputs_validated_only`, never native acceptance. The container runs the official
+build and unchanged control script in sequence:
 
 ```sh
 dune build --root . @theories/default @tests/default
 bash tests/check.sh
 ```
+
+Upstream's documented script command is `./tests/check.sh`. We invoke its unchanged bytes
+through Bash because the temporary work mount remains `noexec`; the actual argv is retained.
 
 Each official exit is retained; all must succeed, and the generated ELF hashes must match the
 published pins. The wrapper supplies no replacement proof checker or theorem. It retains the

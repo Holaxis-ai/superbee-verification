@@ -16,7 +16,9 @@ import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN = ROOT / 'experiments/rocq-binary-capability/pins.json'
-COMMANDS = ['dune build --root . @theories/default @tests/default', 'bash tests/check.sh']
+# Authoritative upstream commands; the actual container argv below records the
+# Bash invocation needed on our noexec work mount without changing script bytes.
+COMMANDS = ['dune build --root . @theories/default @tests/default', './tests/check.sh']
 # Keep the upstream build and checker unchanged. Their own exits decide acceptance;
 # the wrapper additionally binds their inputs and generated binary identities.
 CHECK = r'''set -u
