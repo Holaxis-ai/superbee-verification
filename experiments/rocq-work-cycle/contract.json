@@ -1,0 +1,27 @@
+{
+  "v": 1,
+  "scope": "typed executable Rocq retirement source only; not TypeScript, extracted code or binary execution",
+  "checker": "ghcr.io/theorem-labs/oss-fuzz-theorems-checker@sha256:cc9ae43a9f4b0dd59d7c8d30727d36e039bfe72a2a9f9c4a99c68e413037e902",
+  "frozen_sources": {
+    "Kernel.v": "77ae40ce25631b133440f60e89ccc1ddcdb46056548121ce5d66aaf091348484",
+    "Specification.v": "be11d17b359cba294a8047ef7c8308b34667716cd459d73dba3cabd3476bfbcb"
+  },
+  "theorem_type": "Retirement.Specification.retirement_correct",
+  "candidate_theorem": "retirement_correct_holds",
+  "allowed_axioms": [],
+  "limits": {
+    "max_attempts": 3,
+    "total_seconds": 900,
+    "attempt_seconds": 240
+  },
+  "additional_theorems": [
+    {
+      "type": "Retirement.Specification.refuse_all_incorrect",
+      "theorem": "refuse_all_fails"
+    },
+    {
+      "type": "Retirement.Specification.drop_all_incorrect",
+      "theorem": "drop_all_fails"
+    }
+  ]
+}
