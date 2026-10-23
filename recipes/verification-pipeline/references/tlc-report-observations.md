@@ -6,16 +6,35 @@ target_kind: VerificationRun
 identity:
   id: "{key}"
 fields:
-  observed_status: verification.reported_status
-  observed_input_match: verification.input_match
+  observed_status:
+    from: verification.reported_status
+    values:
+      reported_pass: reported_pass
+      reported_fail: reported_fail
+    unmapped: refuse
+  observed_input_match:
+    from: verification.input_match
+    values:
+      matches: matches
+      mismatch: mismatch
+    unmapped: refuse
   observed_report_digest: verification.report_digest
   observed_artifact_revision: verification.artifact_revision
   observed_source_revision: verification.source_revision
   observed_variant_count: verification.variant_count
   observed_expected_variant_count: verification.expected_variant_count
-  observed_report_completion: verification.report_completion
+  observed_report_completion:
+    from: verification.report_completion
+    values:
+      complete: complete
+      partial: partial
+    unmapped: refuse
   observed_source_check: verification.reported_source_check
-  observed_association: verification.association
+  observed_association:
+    from: verification.association
+    values:
+      caller_asserted: caller_asserted
+    unmapped: refuse
 owned_fields:
   - observed_status
   - observed_input_match
