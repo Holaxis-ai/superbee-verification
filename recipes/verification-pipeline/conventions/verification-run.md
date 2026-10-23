@@ -18,7 +18,28 @@ fields:
   - job_seconds
   - token_count
   - cost_usd
+  - observed_status
+  - observed_input_match
+  - observed_report_digest
+  - observed_artifact_revision
+  - observed_source_revision
+  - observed_variant_count
+  - observed_expected_variant_count
+  - observed_report_completion
+  - observed_source_check
+  - observed_association
   values:
+    observed_status:
+    - reported_pass
+    - reported_fail
+    observed_input_match:
+    - matches
+    - mismatch
+    observed_report_completion:
+    - complete
+    - partial
+    observed_association:
+    - caller_asserted
     verdict:
     - accepted
     - rejected
@@ -32,6 +53,9 @@ fields:
     - assumption
     - unqualified
   types:
+    observed_variant_count: integer
+    observed_expected_variant_count: integer
+    observed_source_check: boolean
     elapsed_seconds: number
     job_seconds: number
     token_count: integer
