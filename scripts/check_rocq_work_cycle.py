@@ -72,7 +72,7 @@ def main():
     parser.add_argument('--container-name', default='superbee-rocq-cycle-' + uuid.uuid4().hex)
     parser.add_argument('--validate-only', action='store_true')
     args = parser.parse_args()
-    if not re.fullmatch(r'superbee-rocq-cycle-[A-Za-z0-9-]+', args.container_name):
+    if not re.fullmatch(r'superbee-rocq-cycle-[A-Za-z0-9_-]+', args.container_name):
         parser.error('Invalid unique container name')
     report = {'v': 1, 'status': 'error', 'scope': 'typed executable Rocq retirement source only',
               'native_checks_run': False, 'substantial_component_milestone': False,
