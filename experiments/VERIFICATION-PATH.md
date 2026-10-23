@@ -1,5 +1,15 @@
 # Implementation-verification path decision
 
+## Current research mandate
+
+The [implementation-proof pipeline milestone](PIPELINE-MILESTONE.md) now owns the larger research
+direction: a useful property of a substantial actual implementation and demonstrated proof reuse
+on a second implementation target. The qualified narrow adoption below remains evidence and a
+constraint on claims, not a ceiling that forces every future experiment into a tiny pure helper.
+No unsupported runtime guarantee, new private interpreter or production rewrite is authorized.
+
+## Historical bounded qualification
+
 Decision: **GO for scoped verification of compatible pure decision functions using an established
 execution model. NO-GO on growing the custom Lean fragment into a general TypeScript/storage
 verifier or claiming the article's binary-level assurance.** Keep all experiments isolated,

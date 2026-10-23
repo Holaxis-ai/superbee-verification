@@ -1,5 +1,10 @@
 # Superbee verification experiments
 
+Current research milestone: [a substantial implementation proof with demonstrated transfer to a
+second target](experiments/PIPELINE-MILESTONE.md). The existing experiments below are qualified
+foundations; they do not complete that milestone. The [verification-pipeline recipe](recipes/verification-pipeline/recipe.md)
+provides reusable coordination definitions and evidence guidance without executing proofs.
+
 Small, reproducible mathematical-proof experiments, kept outside the product repository and its
 normal CI. Status: experimental. The initial retirement model has manual source correspondence; the new
 source-classifier experiment derives syntax from a shipped function under trusted restricted

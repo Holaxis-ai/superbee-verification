@@ -1,5 +1,11 @@
 # Verification experiment
 
+Read experiments/PIPELINE-MILESTONE.md before selecting new research work. The current milestone
+is a substantial actual implementation property and demonstrated proof-component reuse on a second
+implementation target; another isolated helper or bounded abstract model does not complete it.
+Use recipes/verification-pipeline and the existing selected bundle for obligations, dependencies,
+exact runs and coordination. Its recipe does not execute checks or automatically invalidate evidence.
+
 This repository owns experimental proof artifacts, not Superbee production behavior. Product
 source and normal CI live in Holaxis-ai/superbee; work coordination lives in the existing selected
 superbee-dev bundle. Do not initialize another bundle here or add a product CI dependency.
