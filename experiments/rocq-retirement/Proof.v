@@ -73,7 +73,7 @@ Proof.
       * intros [H|H]; [inversion H; reflexivity|].
         exfalso. apply Hnot. apply in_map with (f := fst) in H. exact H.
     + rewrite (IH Htail). split; [now right|].
-      intros [H|H]; [inversion H; contradiction|exact H].
+      intros [H|H]; [congruence|exact H].
 Qed.
 Lemma lookup_spec rows key observed : NoDup (map fst rows) ->
   (lookup_meta key rows = observed <-> MetaObserved rows key observed).
@@ -151,7 +151,9 @@ Proof.
     In other (actual_records i) /\ record_id other = id /\ record_status other = Acknowledged)
     by (unfold Allowed in H; tauto).
   destruct (Hselecteds _ Hselected) as [other [Hother [Hid Hack]]].
-  assert (row = other) by (eapply unique_id; eauto).
+  assert (row = other).
+  { apply (unique_id (actual_records i) row other Hunique Hin Hother).
+    symmetry. exact Hid. }
   now subst.
 Qed.
 Theorem retirement_correct_holds : retirement_correct.
@@ -159,7 +161,7 @@ Proof.
   unfold retirement_correct, CorrectFor. split.
   { intros i. split; [intros o; apply decision_spec|]. split; [apply refusal_spec|].
   split; [intros; apply remaining_spec; assumption|]. split.
-  - intros o row Hrun Hin Hnot. apply (remaining_spec i o row Hrun).
+  - intros o row Hrun Hin Hnot. apply (proj2 (remaining_spec i o row Hrun)).
     split; [exact Hin|]. intros Hsel. apply Hnot.
     apply (selected_row_unique i row); [exact (proj1 (proj1 (decision_spec i o) Hrun))|exact Hin|exact Hsel].
   - intros o key value Hrun. apply decision_spec in Hrun.
