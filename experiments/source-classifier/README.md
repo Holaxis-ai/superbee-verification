@@ -1,7 +1,7 @@
 # Source-derived classifier proof
 
-Status: experimental source-derived semantic proof. The parser, lowering and adequacy of the
-restricted semantics are trusted. This is not a proof of all TypeScript, compiled JavaScript,
+Status: experimental source-derived semantic proof. An independent Lean decoder checks exact restricted declaration bytes against the externally
+lowered AST. Adequacy of that reviewed grammar and restricted semantics remains trusted. This is not a proof of all TypeScript, compiled JavaScript,
 Node/V8, authorization enforcement, the full uncertain-write protocol or journal preservation.
 
 ## Actual implementation target
@@ -43,7 +43,8 @@ checks theorems using only standard logical axioms, printed and audited by the r
 | --- | --- |
 | Lean theorem derivations over generated syntax | Kernel checked; source-input hashes and axiom dependencies recorded |
 | Product acquisition and identity | Exact commit in manual CI plus whole-file hash; changed bytes fail closed |
-| TypeScript parser and AST lowering | Trusted, pinned and independently reviewed; not formally verified |
+| TypeScript parser and AST lowering | Pinned and reviewed; output must additionally match independent kernel-reduced decoding of the original declaration bytes |
+| Lean restricted-source decoder | Executed by kernel reduction; grammar adequacy to TypeScript/ECMAScript is reviewed, not formally proved |
 | UTF-16 encoding and restricted semantics vs ECMAScript | Explicit small model, manually mapped; not a proved refinement of the standard |
 | Native transpiler and Node/V8 execution | Trusted; fixture agreement is empirical and not universal runtime conformance |
 | Input records and set/builtin environment | Assumed ordinary side-effect-free data properties; no getters, proxies, prototype surprises or concurrent mutation |
@@ -73,7 +74,7 @@ Install the pinned Lean toolchain and Node24.22.1, then in this repository:
 
 ```sh
 npm ci --ignore-scripts --no-audit --no-fund
-python3 scripts/check_bridge.py \
+python3 scripts/check_source_decode.py \
   --source-file /path/to/pinned-superbee/packages/core/src/uncertain-write.ts \
   --json-out .artifacts/bridge-result.json \
   --evidence-dir .artifacts/bridge-evidence
@@ -96,3 +97,35 @@ the gap. Do not generate or adopt a new production implementation without a sepa
 
 See [bridge alternatives](BRIDGE-DECISION.md), local/hosted measurements in RESULTS.md and the
 [Superbee task](https://github.com/Holaxis-ai/superbee-dev/blob/board/tasks/connect-mathematical-proof-to-shipped-code.md).
+
+## Independent source-byte check
+
+The source pin now records two reviewed half-open byte spans in the immutable original file:
+complete set declaration and complete function declaration. The Python runner reads those slices
+directly, independently of TypeScript node positions or string decoding, joins them with whitespace,
+and checks they equal the extracted declarations. The exact original bytes are embedded as numeric
+lists in an ephemeral Lean input. Source acquisition, span review and numeric embedding remain part
+of the external trust boundary; surrounding module execution is not checked.
+
+`Bridge/SourceDecode.lean` independently recognizes a deliberately narrow grammar and reconstructs
+Expr and code data. Lean checks `decode declarationBytes = some (generatedProgram, generatedCodes)`
+by ordinary kernel reduction, then connects this result to the existing universal policy theorem.
+The external TypeScript parser/lowering can no longer silently provide a different accepted AST.
+This is not a proved-correct general TypeScript parser: the recognizer's grammar and its relation
+to real TypeScript/ECMAScript are still reviewed assumptions.
+
+Accepted source is ASCII with unescaped double-quoted printable literals, explicit known signatures,
+exactly six set entries with trailing commas, ordinary kind/code reads, native membership syntax,
+Boolean literals, parentheses, strict comparison,
+AND and OR. Non-ASCII/escaped source literals and other language features are deliberately rejected;
+this restriction applies to program text, not the theorem's arbitrary UTF16 runtime input strings.
+Extra statements, optional access, defaults, calls, whitespace-split operators and trailing
+declarations must fail closed. A line terminator after `return` is rejected to respect automatic
+semicolon insertion.
+Both controlled source mutants still decode successfully but violate the unchanged policy.
+Separate controls retain original source while corrupting the external AST, literal encoding and
+set contents; each correspondence proof must fail. No native-decision oracle is used.
+
+The manual source-bridge job runs this checker, which includes the previous checker once.
+This reduces reliance on external syntax lowering; it does not verify the JS engine, native Set,
+module environment, actual runtime values or the decoder's adequacy to the language standard.

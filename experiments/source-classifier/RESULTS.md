@@ -41,3 +41,36 @@ kernel counterexamples, so their failure is not inferred solely from proof-tacti
 The next implementation-proof milestone must certify/replace this trusted bridge or adopt a
 suitable established execution model before widening claims. This experiment does not establish
 that Node/V8 or a full journal/storage implementation can be proved at this cost.
+
+## Independent byte-decoding follow-up, 2026-10-23
+
+The earlier result above describes the first bridge. The follow-up adds pure Lean decoding of
+complete original declaration byte spans, not a verified general TypeScript parser. External
+TypeScript lowering is now cross-checked by a kernel-reduced independent decoder before linking
+the decoded program to the unchanged universal policy. Grammar/ECMAScript adequacy, acquisition,
+span selection/embedding, surrounding module context and runtime assumptions remain trusted.
+
+Local integrated run passed in 37.9416s summed stages, including the earlier source/native suite
+(6.9107s internally; 7.2403s outer wall time), fresh decoder compilation (10.042s), original and
+two mutant decoding certificates, decoded-source policy, three corrupted generated-artifact
+rejections and seven unsupported-source rejection proofs. Each individual subprocess remains
+limited to60s. Setup costs and construction token/dollar cost remain excluded/uninstrumented.
+The decoder is deliberately small; these timings are not full-application estimates.
+
+Pinned original byte spans are [10267,10480) and [10574,10752). Their concatenation with two
+newlines and a final newline has SHA256
+`0a1ba5db2b3deb5bc5a67ec706910d1f41218709d0079b018e56a73473ce9abf`.
+All accepted certificates use only propext, Classical.choice and Quot.sound. Corrupted external
+program, tag encoding and set contents each make the correspondence certificate fail. Existing
+actual-source mutations still decode, fail the unchanged policy and retain checked counterexamples.
+Unsupported-source controls include return-newline ASI, additional statement, optional access,
+default argument, extra call, escaped literal and trailing declaration.
+
+Actual failed attempts were retained. A parser-level parenthesis example caught Lean nested
+`return` exiting before the enclosing continuation; using `pure` restored the intended parse.
+Independent design review caught split operator acceptance and return-newline ASI; the lexer now
+requires contiguous operators and rejects line terminators after return. The first integrated
+certificate run also failed because saved evidence omitted compiled generated modules; recompiling
+those inputs freshly fixed module resolution. No intended policy was weakened, and none of these
+verification-tool failures is presented as a production bug. Exact-candidate independent review
+and hosted manual run are recorded in the linked Superbee follow-up task after completion.

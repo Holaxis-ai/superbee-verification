@@ -55,5 +55,5 @@ jobs:
           lint: 'false'
           use-github-cache: 'false'
           use-mathlib-cache: 'false'
-      - name: Check source-derived claims, native replay, semantic mutants and drift
-        run: python3 scripts/check_bridge.py --source-file .artifacts/product-source/packages/core/src/uncertain-write.ts --json-out .artifacts/bridge-result.json
+      - name: Check byte decoding, source-derived claims, replay and mutations
+        run: python3 scripts/check_source_decode.py --source-file .artifacts/product-source/packages/core/src/uncertain-write.ts --json-out .artifacts/bridge-result.json
