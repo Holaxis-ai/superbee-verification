@@ -26,3 +26,8 @@ outputs stay untracked. The manual GitHub run will provide Linux cold-setup/job 
 The low cost reflects a deliberately small policy theorem. It does not establish feasibility of
 full TypeScript, browser, storage or lifecycle proofs. Next work is independent statement/source
 mapping review and assessment of a credible implementation bridge before expanding scope.
+
+The initial hosted run39974502799 on bootstrapaaf8d0b stopped in action configuration because
+lake-manifest.json was absent. It installed the pinned toolchain but did not execute the proof.
+The follow-up adds Lake's generated manifest with an empty packages list; proof bytes are unchanged.
+This setup failure is retained and is not counted as a failed theorem or a passing proof run.
