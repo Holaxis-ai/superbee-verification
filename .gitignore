@@ -4,3 +4,5 @@ __pycache__/
 *.olean
 *.ilean
 .DS_Store
+
+node_modules/
