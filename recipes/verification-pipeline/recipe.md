@@ -2,12 +2,13 @@
 type: Recipe
 id: verification-pipeline
 title: Verification Pipeline
-version: 0.1.0
+version: 0.1.1
 summary: Exact verification targets, proof obligations, reusable components and native-checker
   evidence.
 content_policy: definitions-only
 references:
 - references/verification-pipeline-workflow.md
+- references/tlc-report-observations.md
 ---
 
 # Verification Pipeline

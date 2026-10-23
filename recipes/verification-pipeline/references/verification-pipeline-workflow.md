@@ -48,7 +48,12 @@ This version supplies relationships and a workflow, not automatic transitive inv
 
 A Superbee source plugin/Connector is useful for importing native checker/CI observation metadata and exact artifact identities without manual transcription. It is optional for authoring/replay. Recipe installation must never acquire credentials, execute a checker or contact providers. Provider-owned observation fields must be separate from human/agent-owned statement, assumption, assignment and reviewed-discharge decisions. Imported pass is observed evidence, not automatic proof admission.
 
-The inspected distributed GitHub plugin exposes github-issues, not proof/Actions result ingestion. Source run updates explicitly linked existing documents; do not assume it creates a proof graph. A future proof-run profile requires exact source/spec/tool/input matching, bounded recorded-fixture tests for error/stale/partial/conflict/counterexample handling and explicit binding/permissions. Do not add an unimplemented Connector or promise automated proof tracking in this recipe. Native checker artifact formats and stable identities should be established by the first substantial proof target before implementing that adapter.
+The separate verification local-operation plugin supports one bounded retained TLC report format,
+not general proof/Actions ingestion. The installed references/tlc-report-observations declaration
+maps only optional observed_* fields onto deliberately linked existing runs. See that declaration
+for compatibility, explicit registration/binding, canonical Signal prerequisite and trust limits.
+No code is acquired or executed by this recipe. Actual checker execution, other report formats,
+automatic dependency invalidation and reviewed proof admission remain separate work.
 
 ## Authority and storage
 
