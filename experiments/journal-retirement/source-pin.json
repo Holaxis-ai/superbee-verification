@@ -1,0 +1,23 @@
+{
+  "repository": "Holaxis-ai/superbee",
+  "commit": "a63eef111001974a89ce35a83759bbe183814a1c",
+  "paths": {
+    "packages/core/src/journaled-backend.ts": {
+      "gitBlob": "05d1118de7720ad8decca4ad3c138ebad5688ec4",
+      "sha256": "854fd08e29bc2f39a0c18f65e1fdbd77de1f1341a5b1ac07eb7fbdea3512eaab"
+    },
+    "packages/core/src/indexeddb-backend.ts": {
+      "gitBlob": "e0161813ba4abe5dc67d4ed030493f2078765229",
+      "sha256": "78ff147aa175791d7b9d4676d8295099822f761052f9bad6439703b1bb074a1a"
+    },
+    "packages/core/src/file-journaled-backend.ts": {
+      "gitBlob": "09599fc9ca742d27cfbeb1d6a0aa7bcc5089ae38",
+      "sha256": "c41d035ead80430d2539da73b276f62d57ee9da262b0251907e2439e87c8e040"
+    },
+    "packages/browser-local/src/body-journal.ts": {
+      "gitBlob": "ed6bcb4455abdda5b2e284a98f54941c10fb173e",
+      "sha256": "be4fcaa60512da1ed76ea53cfbdef9427d1e81e5835dfcc3f946de2abc683c69"
+    }
+  },
+  "correspondence": "manual inspection only; no verified translation or TypeScript semantics"
+}

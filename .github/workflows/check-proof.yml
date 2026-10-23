@@ -1,0 +1,26 @@
+name: Check journal proof (manual experiment)
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up pinned Lean; no libraries or automatic build
+        uses: leanprover/lean-action@24581d74d674803a25a81b10b059c5c0cdd344c6 # reviewed v1 commit
+        with:
+          auto-config: 'false'
+          build: 'false'
+          test: 'false'
+          lint: 'false'
+          use-github-cache: 'false'
+          use-mathlib-cache: 'false'
+      - name: Install the selected toolchain (cold setup measured separately)
+        run: elan toolchain install leanprover/lean4:v4.27.0
+      - name: Clean proof, axiom audit and expected rejection
+        run: python3 scripts/check.py --json-out .artifacts/check.json

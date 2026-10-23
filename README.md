@@ -1,0 +1,47 @@
+# Superbee verification experiments
+
+Small, reproducible mathematical-proof experiments, kept outside the product repository and its
+normal CI. Initial status: experimental, source correspondence manually inspected, no TypeScript
+refinement proof and no independent semantic review yet.
+
+The first experiment proves a focused journal-retirement rule with Lean 4.27.0. Given valid
+acknowledgement accounting, preserved local payloads, and acknowledged-only admission, one
+abstract atomic retirement preserves outstanding accepted payloads. Induction extends that result
+to arbitrary finite sequences of admitted retirements. There is no fixed journal-size bound.
+
+The proof also contains a concrete payload-loss counterexample when the admission premise is
+bypassed, and a nonempty admitted retirement witness. This does not prove the complete lifecycle,
+backend atomicity, acknowledgement validity, or the shipped TypeScript implementation.
+
+## Run
+
+Install elan, then the pinned toolchain if it is not already present:
+
+```sh
+elan toolchain install leanprover/lean4:v4.27.0
+python3 scripts/check.py --json-out .artifacts/check.json
+```
+
+Python 3 and the Lean standard library suffice. Each subprocess has a 60-second limit. The checker
+compiles from source into a fresh temporary directory, audits all experiment theorem dependencies,
+and requires Lean to reject a deliberately false preservation claim. It permits only Lean's
+standard logical axioms, never proof placeholders or custom theorem assumptions introduced as axioms.
+
+`.github/workflows/check-proof.yml` runs this same check **only on manual dispatch**, on a standard
+`ubuntu-latest` runner with a ten-minute job limit and read-only permissions. No push, pull-request,
+scheduled, or product-repository workflow calls it. No generated binaries or large artifacts are
+committed. Initial cold toolchain setup is measured separately from proof-check time in job logs.
+
+## Scope and evidence
+
+- [Theorems](Journal/Retirement.lean)
+- [Source pin, assumptions, correspondence and next milestone](experiments/journal-retirement/README.md)
+- [Initial measured result](experiments/journal-retirement/RESULTS.md)
+- [Superbee work record](https://github.com/Holaxis-ai/superbee-dev/blob/board/tasks/journal-preservation-mathematical-proof-experiment.md)
+
+This experiment follows the agent-assisted, machine-checked-proof idea discussed in
+[Anthropic's article](https://www.anthropic.com/research/formal-verification), using a small Lean
+source model rather than their Rocq/RISC-V binary verification pipeline. The kernel checks the
+proof; people still need to review the theorem, assumptions and implementation connection.
+
+Licensed under Apache-2.0, matching Superbee.
