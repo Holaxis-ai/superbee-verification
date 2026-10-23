@@ -10,6 +10,7 @@ on:
           - lean
           - settlement
           - retry
+          - protocol
 permissions:
   contents: read
 jobs:
@@ -147,3 +148,39 @@ jobs:
           --source-file .artifacts/settlement-source/packages/core/src/uncertain-write.ts
           --tool-dir .artifacts/gillian-tools
           --json-out .artifacts/settlement-regression.json
+  protocol:
+    if: ${{ inputs.experiment == 'protocol' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read frozen protocol owners without building product code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: 6092eaf6d16c8bf2c25d526cbbb768cfa07e9b72
+          path: .artifacts/protocol-source
+          sparse-checkout: |
+            packages/core/src/blob-journal.ts
+            packages/core/src/hosted-client/blob-write.ts
+            packages/core/src/hosted-client/blob-delivery.ts
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-java@b843ebf9b913146b38da2eaa7aeddf76074ae1ad
+        with:
+          distribution: temurin
+          java-version: '21'
+      - name: Download and verify the existing pinned TLC release
+        run: |
+          curl -fsSL --retry 3 -o "$RUNNER_TEMP/tla2tools.jar" https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar
+          echo "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88  $RUNNER_TEMP/tla2tools.jar" | sha256sum --check --strict
+      - name: Check bounded retry protocol, recovery and negative controls
+        run: >-
+          python3 scripts/check_retry_protocol.py
+          --tlc-jar "$RUNNER_TEMP/tla2tools.jar"
+          --source-root .artifacts/protocol-source
+          --json-out .artifacts/protocol-result.json
+          --evidence-dir .artifacts/protocol-evidence

@@ -70,3 +70,14 @@ The [safe retry admission experiment](experiments/gillian-retry/README.md) reuse
 `blobIntentResendable`. It separately qualifies bounded safe-integer equality/zero fallback and
 missing/undefined fields, verifies positive and denial contracts, and records caller enforcement
 as source correspondence. No asynchronous/storage or IEEE754-arithmetic proof is implied.
+
+## Bounded retry protocol
+
+The [retry protocol experiment](experiments/retry-protocol/README.md) examines two handles sharing
+one retained blob request across guarded claims, typed non-execution evidence, crashes and late
+carrier outcomes. It complements the source-level eligibility check with bounded TLC model
+checking and explicit implementation correspondence. It does not prove backend durability,
+truthful host evidence, unbounded behavior or TypeScript refinement. Explicit forget and identity
+reuse have a separate contract and are outside this automatic-retry model.
+
+Select `experiment=protocol` on the existing manual workflow. No product CI gate is added.
