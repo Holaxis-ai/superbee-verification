@@ -61,7 +61,7 @@ unchanged official commands in sequence:
 
 ```sh
 dune build --root . @theories/default @tests/default
-./tests/check.sh
+bash tests/check.sh
 ```
 
 Each official exit is retained; all must succeed, and the generated ELF hashes must match the

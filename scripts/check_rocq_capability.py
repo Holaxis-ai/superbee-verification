@@ -16,13 +16,12 @@ import uuid
 
 ROOT = Path(__file__).resolve().parents[1]
 PIN = ROOT / 'experiments/rocq-binary-capability/pins.json'
-COMMANDS = ['dune build --root . @theories/default @tests/default', './tests/check.sh']
+COMMANDS = ['dune build --root . @theories/default @tests/default', 'bash tests/check.sh']
 # Keep the upstream build and checker unchanged. Their own exits decide acceptance;
 # the wrapper additionally binds their inputs and generated binary identities.
 CHECK = r'''set -u
 cp -R /input/. /work/
 cd /work
-chmod u+x tests/check.sh
 rocq --version > /evidence/versions.log 2>&1 && dune --version >> /evidence/versions.log 2>&1 && elf-snapshot --help >> /evidence/versions.log 2>&1
 setup_exit=$?
 printf '%s\n' "$setup_exit" > /evidence/setup.exit
@@ -31,7 +30,8 @@ dune build --root . @theories/default @tests/default > /evidence/build.log 2>&1
 build_exit=$?
 printf '%s\n' "$build_exit" > /evidence/build.exit
 if [ "$build_exit" -ne 0 ]; then exit "$build_exit"; fi
-./tests/check.sh > /evidence/checker.log 2>&1
+# /work remains noexec; interpret the pinned, unchanged Bash control script.
+bash tests/check.sh > /evidence/checker.log 2>&1
 checker_exit=$?
 printf '%s\n' "$checker_exit" > /evidence/checker.exit
 for f in tests/toy/exit0/exit0.plain tests/toy/exit0/exit0.padded tests/toy/exit1/exit1.plain; do
