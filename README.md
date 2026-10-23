@@ -65,3 +65,8 @@ recognizing an own-version conflict from incorrectly acknowledging unrelated con
 pinned prebuilt tools, semantic mutants and an equivalent changed-code control, with no custom
 JS semantics added. This is trusted-tool symbolic verification, distinct from the Lean kernel
 proofs and from a proof of actual Node/V8 execution. See the [scope/adoption decision](experiments/VERIFICATION-PATH.md).
+
+The [safe retry admission experiment](experiments/gillian-retry/README.md) reuses that toolchain on
+`blobIntentResendable`. It separately qualifies bounded safe-integer equality/zero fallback and
+missing/undefined fields, verifies positive and denial contracts, and records caller enforcement
+as source correspondence. No asynchronous/storage or IEEE754-arithmetic proof is implied.

@@ -27,3 +27,11 @@ failures for the three semantic mutants, the equivalent-null-check passing contr
 input/tool identities. Do not label Gillian output as a Lean-kernel certificate. Keep compiler,
 model, verifier/solver, input-record and module/runtime assumptions visible. New targets must fit
 an established execution model without unreviewed language/runtime extensions.
+
+For safe retry admission, read experiments/gillian-retry/README.md, RESULTS.md and
+CALLER-CORRESPONDENCE.md; use scripts/check_retry.py with pinned source and the same tool receipt.
+Preserve exact case identities from cases.json and structured verifier results, complete positive
+and denial controls, and the passing equivalent changed program. Keep bounded-real/safe-integer,
+missing/undefined, descriptor/prototype, captured-valid versus reachable and caller/evidence limits
+explicit. Changes to shared gillian_runtime.py require the existing settlement regression. Do not
+turn a defensive null/receipt/state projection into a claimed reachable production bug.
