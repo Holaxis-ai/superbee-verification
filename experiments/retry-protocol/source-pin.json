@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/Holaxis-ai/superbee",
+  "commit": "6092eaf6d16c8bf2c25d526cbbb768cfa07e9b72",
+  "files": {
+    "packages/core/src/blob-journal.ts": "225aaaa8e6e148ad85d9a9ff2f32f6b96f95295faf4e8cecc96c3e283cfa029c",
+    "packages/core/src/hosted-client/blob-write.ts": "2a81526ddd6ece18ac623315514f33bea50ec556d2f235bc0cef138f01aad4ad",
+    "packages/core/src/hosted-client/blob-delivery.ts": "7724aae1c888b9567e0605f4c3165eaec3a84215aebb3e5164ba6e772e4260f0"
+  },
+  "status": "Manual source correspondence only, not an extracted transition system.",
+  "tlc": {
+    "version": "1.7.4",
+    "url": "https://github.com/tlaplus/tlaplus/releases/download/v1.7.4/tla2tools.jar",
+    "sha256": "936a262061c914694dfd669a543be24573c45d5aa0ff20a8b96b23d01e050e88"
+  }
+}
