@@ -1,0 +1,50 @@
+{
+  "gillian_release_id": 397455510,
+  "z3_commit": "ddb49568d3520e99799e364fb22f35fc67d887b1",
+  "z3_release_id": 287991263,
+  "archives": [
+    {
+      "archive": "gillian-js-nightly-macos-arm64.tar.gz",
+      "url": "https://github.com/GillianPlatform/Gillian/releases/download/nightly/gillian-js-nightly-macos-arm64.tar.gz",
+      "asset_id": 644098371,
+      "sha256": "728f7c603ee838f620ae4ce3e69245a5bb2d01d07ca8bfed6005ea12b0b14425",
+      "bytes": 8369305
+    },
+    {
+      "archive": "z3-4.16.0-arm64-osx-15.7.3.zip",
+      "url": "https://github.com/Z3Prover/z3/releases/download/z3-4.16.0/z3-4.16.0-arm64-osx-15.7.3.zip",
+      "asset_id": 358355280,
+      "sha256": "41828fa07d5cb77bfaee326e8e6dac074f26329c09c633f9e66012bb917cf8ae",
+      "bytes": 37678991
+    },
+    {
+      "archive": "gillian-js-nightly-linux-x86_64.tar.gz",
+      "url": "https://github.com/GillianPlatform/Gillian/releases/download/nightly/gillian-js-nightly-linux-x86_64.tar.gz",
+      "asset_id": 644098350,
+      "sha256": "c71ee85e47ba6fa5d8ea81a97e4f691ade2f84f48e5b01df30d8d2569dc40ff0",
+      "bytes": 10157111
+    },
+    {
+      "archive": "z3-4.16.0-x64-glibc-2.39.zip",
+      "url": "https://github.com/Z3Prover/z3/releases/download/z3-4.16.0/z3-4.16.0-x64-glibc-2.39.zip",
+      "asset_id": 358355276,
+      "sha256": "7288c49a5bd6dbafd7b0b0d1f65956b91672da24b08f09242919af159be3418e",
+      "bytes": 52375919
+    }
+  ],
+  "gillian_release_tag_observed_commit": "469aa5c134ba7790c40669bd4bc50483aff36d7b",
+  "gillian_identity_scope": "nightly tag resolved to this commit at assessment; archive SHA pins downloaded bytes, not independently attested/reproduced source build",
+  "documentation_review_commit": "469aa5c134ba7790c40669bd4bc50483aff36d7b",
+  "z3_version": "4.16.0",
+  "platforms": {
+    "Darwin-arm64": {
+      "gillian_asset_id": 644098371,
+      "z3_asset_id": 358355280
+    },
+    "Linux-x86_64": {
+      "gillian_asset_id": 644098350,
+      "z3_asset_id": 358355276,
+      "minimum_glibc": "2.39"
+    }
+  }
+}

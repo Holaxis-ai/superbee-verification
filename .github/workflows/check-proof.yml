@@ -1,10 +1,19 @@
 name: Check journal proof (manual experiment)
 on:
   workflow_dispatch:
+    inputs:
+      experiment:
+        description: Select the isolated verification experiment
+        type: choice
+        default: lean
+        options:
+          - lean
+          - settlement
 permissions:
   contents: read
 jobs:
   check:
+    if: ${{ inputs.experiment != 'settlement' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -25,6 +34,7 @@ jobs:
       - name: Clean proof, axiom audit and expected rejection
         run: python3 scripts/check.py --json-out .artifacts/check.json
   source-bridge:
+    if: ${{ inputs.experiment != 'settlement' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -57,3 +67,35 @@ jobs:
           use-mathlib-cache: 'false'
       - name: Check byte decoding, source-derived claims, replay and mutations
         run: python3 scripts/check_source_decode.py --source-file .artifacts/product-source/packages/core/src/uncertain-write.ts --json-out .artifacts/bridge-result.json
+  settlement:
+    if: ${{ inputs.experiment == 'settlement' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read exact public product source without installing or building it
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: a63eef111001974a89ce35a83759bbe183814a1c
+          path: .artifacts/product-source
+          sparse-checkout: packages/core/src/uncertain-write.ts
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.22.1'
+      - name: Install the experiment's pinned TypeScript compiler
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Fetch and verify pinned local Gillian and Z3 tools
+        run: python3 scripts/setup_gillian.py --dir .artifacts/gillian-tools --pin experiments/gillian-settlement/toolchain.json
+      - name: Verify contracts, genuine mutants and equivalent changed code
+        run: >-
+          python3 scripts/check_settlement.py
+          --source-file .artifacts/product-source/packages/core/src/uncertain-write.ts
+          --tool-dir .artifacts/gillian-tools
+          --json-out .artifacts/settlement-result.json
+          --evidence-dir .artifacts/settlement-evidence

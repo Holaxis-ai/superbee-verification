@@ -56,3 +56,12 @@ source model rather than their Rocq/RISC-V binary verification pipeline. The ker
 proof; people still need to review the theorem, assumptions and implementation connection.
 
 Licensed under Apache-2.0, matching Superbee.
+
+## Established-tool implementation experiment
+
+The [settlement experiment](experiments/gillian-settlement/README.md) verifies a useful pure
+recovery function with Gillian's existing ES5 model. Four separation-logic cases distinguish
+recognizing an own-version conflict from incorrectly acknowledging unrelated content. It uses
+pinned prebuilt tools, semantic mutants and an equivalent changed-code control, with no custom
+JS semantics added. This is trusted-tool symbolic verification, distinct from the Lean kernel
+proofs and from a proof of actual Node/V8 execution. See the [scope/adoption decision](experiments/VERIFICATION-PATH.md).
