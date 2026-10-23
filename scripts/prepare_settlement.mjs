@@ -50,19 +50,21 @@ for (const [name, text] of Object.entries(variants)) {
   for (const local of ['', 'local', 'other', '\ud800', '😀']) {
     for (const actual of [null, '', 'local', 'other', '\ud800', '😀']) {
       for (const kind of ['conflict', 'committed', 'refused', 'unknown']) {
-        const outcome = Object.freeze({ kind, actual, version: 'existing', untouched: 'preserve' });
-        const intent = Object.freeze({ local, untouched: 'preserve' });
+        const outcome = { kind, actual, version: 'existing', untouched: 'preserve' };
+        const intent = { local, untouched: 'preserve' };
+        const before = JSON.stringify([outcome, intent]);
         const result = sandbox.subject(outcome, intent);
+        const framePreserved = before === JSON.stringify([outcome, intent]);
         const promote = kind === 'conflict' && actual !== null && actual === local;
-        const conforms = promote ? result !== outcome && result.kind === 'committed' && result.version === local : result === outcome;
+        const conforms = framePreserved && (promote ? result !== outcome && result.kind === 'committed' && result.version === local : result === outcome);
         fixtures.push({ kind, actual, local, conforms, sameObject: result === outcome, resultKind: result.kind, resultVersion: result.version });
       }
     }
   }
   // Exercise non-conflicts without an actual field, as allowed by real Outcome variants.
   for (const kind of ['committed', 'refused', 'unknown']) {
-    const input = Object.freeze({ kind });
-    const result = sandbox.subject(input, Object.freeze({ local: 'local' }));
+    const input = { kind };
+    const result = sandbox.subject(input, { local: 'local' });
     fixtures.push({ kind, missingActual: true, conforms: result === input, sameObject: result === input });
   }
   const differences = fixtures.filter(row => !row.conforms);

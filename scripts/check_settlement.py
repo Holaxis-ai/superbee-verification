@@ -116,7 +116,7 @@ def main():
               'z3Version': z3_version, 'nodeVersion': subprocess.check_output([node, '--version'], text=True).strip(),
               'checkedInputHashes': {path: sha(ROOT / path) for path in inputs},
               'runs': runs, 'totalSeconds': round(sum(run['seconds'] for run in runs), 4),
-              'claim': 'Gillian separation-logic symbolic verification of the isolated emitted ES5 function for distinct ordinary data records; trusted TypeScript/Gillian/ES5/solver/string/runtime boundary, not Lean-kernel or binary verification'}
+              'claim': 'Gillian separation-logic symbolic verification of the isolated emitted ES5 function for distinct extensible standard-prototype records with writable/enumerable/configurable owned data fields; trusted TypeScript/Gillian/ES5/solver/string/runtime boundary, not Lean-kernel or binary verification'}
     if args.json_out:
         args.json_out.parent.mkdir(parents=True, exist_ok=True)
         args.json_out.write_text(json.dumps(report, indent=2) + '\n')

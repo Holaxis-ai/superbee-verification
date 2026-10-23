@@ -23,7 +23,7 @@ mutants fail the unchanged postconditions; a behavior-equivalent changed program
 more useful evidence of semantic discrimination and reuse than a third bespoke decoder proof.
 
 The trust boundary remains materially larger than a small Lean proof checker: source isolation
-and TypeScript erasure, Gillian translation/verifier, its ES5/string/heap semantics, Z3, ordinary
+and TypeScript erasure, Gillian translation/verifier, its ES5/string/heap semantics, Z3, explicitly described
 input records and actual Node/V8 adequacy. The result is symbolic verification under that boundary,
 not a proof about the original deployed binary. See [measured results](gillian-settlement/RESULTS.md).
 

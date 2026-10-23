@@ -13,7 +13,7 @@ boundary](README.md). Candidate exact-commit review and hosted result follow thi
 | Harmless layout/comment change | Canonical emitted bytes equal baseline;123 native cases agree |
 | Unapproved whole-file drift | Rejected by source pin |
 
-Each variant has123 native fixtures; original/equivalent variants have zero policy differences.
+Each variant has123 native fixtures on extensible records with standard own-field flags; original/equivalent variants have zero policy differences.
 Bad comparison has25, wrong version5, unconditional promotion118. These finite results support
 nonvacuity and interpretation of the mutations; the symbolic verification result comes from
 Gillian's body analysis of four universally described pre/post cases, not enumerating fixtures.
@@ -59,3 +59,14 @@ There is no custom interpreter/decoder addition here. TypeScript, Gillian JS-to-
 Z3 and actual-runtime correspondence remain trusted. Four successful specifications are not a
 kernel-generated proof certificate, and native UTF16 fixtures do not prove universal model-to-V8
 string correspondence. No storage or asynchronous protocol correctness claim follows.
+
+Independent predicate review clarified that JSObject assumes standard Object.prototype and
+extensible objects, while DataProp requires writable/enumerable/configurable fields. The initial
+native fixtures were frozen diagnostic values outside that exact descriptor domain. Final native
+fixtures use matching ordinary descriptors and explicit input snapshots instead. The formal
+contract was unchanged; the descriptor assumptions and actual upstream predicate link are now
+explicit. Native fixtures remain empirical evidence, never universal runtime correspondence.
+
+The final descriptor-aligned native checker rerun passed in0.8707s summed stages. The same four
+formal contracts, annotated program hashes and all semantic verdicts were retained; this warmer
+local timing is not a cold-start estimate.

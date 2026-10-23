@@ -41,8 +41,9 @@ replaces the body. `gillian-js verify` analyzes the body for each pair. Although
 
 ## Input and environment assumptions
 
-- Distinct ordinary nonnull outcome and intent records with own data properties, standard object
-  behavior, and no getters/proxies or environmental mutation during evaluation.
+- Distinct nonnull, extensible outcome and intent records with standard Object.prototype.
+  Owned data fields are writable, enumerable and configurable, as required by the actual
+  upstream JSObject/DataProp predicates. No getters/proxies or environmental mutation.
 - `intent.local` is a string in every case. A conflict owns actual as string or null; nonconflicts
   need not have an actual field. Kind may be any model string unequal to conflict in the last case.
 - Strings have Gillian's formal string-theory meaning. Universal Node/V8 UTF16 correspondence,
@@ -74,7 +75,8 @@ A harmless layout/comment variant emits byte-identical JavaScript after the decl
 options, demonstrating a maintenance case without another verifier run. Whole-file source drift
 still fails the pin and requires an explicit reviewed update. All three bad variants must reach four
 analyzed cases and fail specifically on postconditions: unsupported syntax/crash/timeout is not
-counted as bug detection. Frozen native inputs exercise123 fixtures per variant; negative
+counted as bug detection. Ordinary extensible native inputs with matching descriptor flags exercise123 fixtures per variant;
+  snapshots additionally check input-field preservation. negative
 fixtures are evidence of deliberately changed code, not newly discovered production defects.
 
 ## Reproduce and tool identity
@@ -111,5 +113,5 @@ See [results](RESULTS.md) and [verification-path decision](../VERIFICATION-PATH.
 
 - [Gillian-JS ES5 scope](https://gillianplatform.github.io/instantiations/js/index.html)
 - [JaVerT architecture](https://gillianplatform.github.io/publications/javert.html)
-- [Upstream contract predicates](https://github.com/GillianPlatform/Gillian/blob/469aa5c134ba7790c40669bd4bc50483aff36d7b/Gillian-JS/runtime/JSLogic/javert_js_predicates.jsil)
+- [Upstream contract predicates](https://github.com/GillianPlatform/Gillian/blob/469aa5c134ba7790c40669bd4bc50483aff36d7b/Gillian-JS/runtime/JSLogic/javert_internal_functions.jsil)
 - [Multiple specification cases](https://github.com/GillianPlatform/Gillian/blob/469aa5c134ba7790c40669bd4bc50483aff36d7b/Gillian-JS/Examples/JaVerT/test262/switch-01.js)
