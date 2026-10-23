@@ -64,7 +64,8 @@ lookup can reconstruct that guarantee. It checks eventual dispatch of attempt tw
 recovery epoch**: no new crashes, application outcomes or local cancellations, and weak fairness of
 each handle's snapshot refresh, the claim group and the wire group. It does not require both handles
 to win. The rollback/reopen/retry reachability control separately reaches durable local non-dispatch
-coverage from the normal initial state, crashes/reopens, then dispatches attempt two.
+coverage from the normal initial state, crashes/reopens the original claimant, then dispatches
+attempt two. An uninvolved worker reopening cannot satisfy that provenance-loss witness.
 
 Unknown/absent lookup alone is intentionally permitted to remain unresolved in the safety model.
 In current delivery code reopened lookup recognizes committed/refused results but does not recover

@@ -51,7 +51,8 @@ CrashReopen(h) ==
  /\ ~Recovery /\ session[h]=0
  /\ session' = [session EXCEPT ![h] = 1]
  /\ token' = [token EXCEPT ![h] = 0]
- /\ events' = events \cup {IF row.attempt \in Attempts /\ owner[row.attempt]=h /\ wires[row.attempt]>0 THEN IF row.attempt=1 THEN "crashAfterWire1" ELSE "crashAfterWire2" ELSE IF token[h]>0 THEN IF token[h]=1 THEN "crashBeforeWire1" ELSE "crashBeforeWire2" ELSE IF row.attempt=1 /\ row.prefix=1 /\ row.state="pending" THEN "durableEvidenceReopen" ELSE "otherCrash"}
+ \* The durable-evidence witness must reopen the original claimant, not an uninvolved worker.
+ /\ events' = events \cup {IF row.attempt \in Attempts /\ owner[row.attempt]=h /\ wires[row.attempt]>0 THEN IF row.attempt=1 THEN "crashAfterWire1" ELSE "crashAfterWire2" ELSE IF token[h]>0 THEN IF token[h]=1 THEN "crashBeforeWire1" ELSE "crashBeforeWire2" ELSE IF row.attempt=1 /\ row.prefix=1 /\ row.state="pending" /\ owner[1]=h THEN "durableEvidenceReopen" ELSE "otherCrash"}
  /\ UNCHANGED <<row,seen,owner,ownerSession,wires,mayApply,applied,safeClaims>>
 Unknown ==
  /\ row.state="in_flight"
