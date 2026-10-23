@@ -86,3 +86,20 @@ truthful host evidence, unbounded behavior or TypeScript refinement. Explicit fo
 reuse have a separate contract and are outside this automatic-retry model.
 
 Select `experiment=protocol` on the existing manual workflow. No product CI gate is added.
+
+## Published binary-proof capability
+
+The [Rocq/RISC-V checkpoint](experiments/rocq-binary-capability/README.md) prepares the published
+OSS Verify toy binary proofs and admission controls in one manual, isolated job. It qualifies
+tooling rather than proving Superbee or completing the substantial implementation milestone.
+Select `experiment=rocq` on the existing manual workflow; no product CI dependency is added.
+
+## Bounded agent/checker construction loop
+
+The [Rocq work cycle](experiments/rocq-work-cycle/README.md) checks agent-authored candidates
+against frozen executable source and an independently reviewed statement, retaining every attempt
+and enforcing a local attempt/time budget. Its first complete typed guarded-retirement component
+[passed after two native diagnostic-driven revisions](experiments/rocq-retirement/RESULTS.md).
+Select `experiment=rocq-cycle`, then `cycle_candidate=final` or `controls` on the existing manual
+workflow. An agent coordinates proof edits; the checker is authoritative. This is source-level
+verified construction, without a claim about the current TypeScript or compiled binary.

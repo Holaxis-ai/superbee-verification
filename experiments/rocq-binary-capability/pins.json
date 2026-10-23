@@ -1,0 +1,210 @@
+{
+  "v": 1,
+  "repository": "https://github.com/theorem-labs/oss-verify-proofs",
+  "commit": "98e995d4daced70a0a4aa2c810854b88720735f1",
+  "checker": "ghcr.io/theorem-labs/oss-fuzz-theorems-checker@sha256:cc9ae43a9f4b0dd59d7c8d30727d36e039bfe72a2a9f9c4a99c68e413037e902",
+  "platform": "linux/amd64",
+  "official_commands": [
+    "dune build --root . @theories/default @tests/default",
+    "./tests/check.sh"
+  ],
+  "expected_controls": {
+    "positive": 4,
+    "negative": 5
+  },
+  "binary_sha256": {
+    "tests/toy/exit0/exit0.plain": "6114056c715d99eed82baecc287611936b5836907afe8f7e79b9fb702e86d6a8",
+    "tests/toy/exit0/exit0.padded": "2505238b46d769f315b06d0bb5532109fa1e400752018d65ad148ed2b25b74a1",
+    "tests/toy/exit1/exit1.plain": "90ff25d8c2c4dc76f8b18add33fccc4bce9e4a1323682a67989cacd0fa02a7fe"
+  },
+  "files": {
+    "LICENSE": {
+      "sha256": "052099c05c4c6661d7e447af7627668f75acca40c0dcb89cde429d221e162cfc",
+      "bytes": 1074
+    },
+    "docs/checking.md": {
+      "sha256": "8fea2025f3a16f72613b3a70a7b51716cf7058c11fe5b453e327d970702af160",
+      "bytes": 6723
+    },
+    "dune-project": {
+      "sha256": "d884bccb51f4484bcc061d3ecf2ecb5fee70b91e3e2f0a6f868ceaf06c4f7cca",
+      "bytes": 78921
+    },
+    "release.yaml": {
+      "sha256": "4912f22ee4fd56fba51f27bb2c3d994bb68edc2440cb0062dec0fdaac1976b5e",
+      "bytes": 11018
+    },
+    "tests/README.md": {
+      "sha256": "905154c1cbdf8cf1a36a6a329dd8fa727aafe030a421c8963f997e6d550c55e7",
+      "bytes": 3680
+    },
+    "tests/check.sh": {
+      "sha256": "73563118287ed6a6238a88d9a0536a8d259d26bc57aa6f71dc52da6dd2d33b50",
+      "bytes": 11724
+    },
+    "tests/dune": {
+      "sha256": "911305fdf67596794378bab0f6c431fd1523840a89e87e3c02d63b6211455f72",
+      "bytes": 503
+    },
+    "tests/negative/admit_axiom/Proof.v": {
+      "sha256": "65a8aca001a0b30c5fe0f09e83e9f384da6970c3f5bd83a255ae68a43c71d325",
+      "bytes": 573
+    },
+    "tests/negative/admit_axiom/claim.yaml": {
+      "sha256": "f27a600ce8174eda3aeef40ff8029b13350d771f6a2b68437b955032297d35de",
+      "bytes": 125
+    },
+    "tests/negative/admitted/Proof.v": {
+      "sha256": "12c76adaa1b07607567595e7604b6826f6f6e3f8367c8537efca8dea74ae50b4",
+      "bytes": 315
+    },
+    "tests/negative/admitted/claim.yaml": {
+      "sha256": "e82ce4aaa103599a8c948b324d717e439011e00ed2ee8a5cf2830929c2c9d4e1",
+      "bytes": 132
+    },
+    "tests/negative/doctored_statement/Proof.v": {
+      "sha256": "3d4cad306540dbd05c091800396f8039911a36c50a115169282f7afb82be9c68",
+      "bytes": 209
+    },
+    "tests/negative/doctored_statement/Statements.v": {
+      "sha256": "390027c05b7b12fc559fc531b7acdf4bdac6e0be88d7e374c941158745b68b69",
+      "bytes": 625
+    },
+    "tests/negative/doctored_statement/claim.yaml": {
+      "sha256": "c7c339fc3576a6895b0316f98fbacd544db008ff94f66de2e271329f708b6b38",
+      "bytes": 173
+    },
+    "tests/negative/extra_axiom/Proof.v": {
+      "sha256": "f47d0b36bb6d4d0195409022fcc54d8766ad8ecc82892f595c62def06492b6db",
+      "bytes": 308
+    },
+    "tests/negative/extra_axiom/claim.yaml": {
+      "sha256": "f61206b0e67c5e90b2ae85e9b31cdb0a0fec31cfe0ec481b4e85288e6449552f",
+      "bytes": 123
+    },
+    "tests/negative/wrong_statement/Proof.v": {
+      "sha256": "f46e430833edbbd3681b8940f1a162dfee050caa923f7ed226b7990eed7a6158",
+      "bytes": 538
+    },
+    "tests/negative/wrong_statement/claim.yaml": {
+      "sha256": "927811d52d1846d3d84450becc9909125d10c6e7e2bb07fcf752bf70ec56c9e4",
+      "bytes": 120
+    },
+    "tests/proofs/lib/Exit0Run.v": {
+      "sha256": "1ffe1414ef4200ff8d57c69cd7a3543ffed9a68771b298b382da0f555c9dce8e",
+      "bytes": 4891
+    },
+    "tests/proofs/toy/exit0/padded_agrees/Proof.v": {
+      "sha256": "d8f4a453cb39fc0b447cf370d30e447b0e438ccb356bc84b115b026d4aa3942e",
+      "bytes": 1432
+    },
+    "tests/proofs/toy/exit0/padded_agrees/proof.yaml": {
+      "sha256": "5e9668db44b8f2cdb23f024abbe5e1ada15083dd72a3a8d75ba9d1705da34180",
+      "bytes": 184
+    },
+    "tests/proofs/toy/exit0/plain_halts/Proof.v": {
+      "sha256": "552c46b79927a970b21831b264112e6bb427ca462b6c4810a1b5d5cd37396477",
+      "bytes": 1481
+    },
+    "tests/proofs/toy/exit0/plain_halts/proof.yaml": {
+      "sha256": "4dd080958dc49c2caded5b7e47a5117bcddc4f9f530cc011667a3c24667237b8",
+      "bytes": 159
+    },
+    "tests/proofs/toy/exit0/plain_halts_may_fail/Proof.v": {
+      "sha256": "98460a47b7b078b133d16d2d927e82a2b22b7f02b023778ef5f855232289ca07",
+      "bytes": 1301
+    },
+    "tests/proofs/toy/exit0/plain_halts_may_fail/proof.yaml": {
+      "sha256": "b195498827b43f2727879d68ff5032d3b510be45a49568f9670572c140895985",
+      "bytes": 111
+    },
+    "tests/proofs/toy/exit1/plain_halts/Refutation.v": {
+      "sha256": "534ee133e798bfa63e6f60ae262cc98c0270f4b6036a891b3e29e855575756b4",
+      "bytes": 3568
+    },
+    "tests/proofs/toy/exit1/plain_halts/proof.yaml": {
+      "sha256": "3a9eeeecefacbd46cf27a565fa813498c6ec11d3bf522ebd49ae2bfc9c57bf2b",
+      "bytes": 133
+    },
+    "tests/toy/Controls.v": {
+      "sha256": "dd332dd0870b89233b522adbda272d5269c00717eb7759220f9ff65ea2bd2ee8",
+      "bytes": 2568
+    },
+    "tests/toy/exit0/Images.v": {
+      "sha256": "c9ebc3a627fef9d0e0be6cc7f267cc99a86381d1d7e1b56d2d95f97f1a36a4ed",
+      "bytes": 950
+    },
+    "tests/toy/exit0/Statements.v": {
+      "sha256": "e2e526ec06806eb22916867ebccdcc089a0316244cc4a9680af3a776bc323c96",
+      "bytes": 1654
+    },
+    "tests/toy/exit0/dune": {
+      "sha256": "e271a05518a48dad1491dcd24685a8af19b71aaa41b7b5e9f7e30113aebcacdf",
+      "bytes": 563
+    },
+    "tests/toy/exit0/exit0.padded.sha256": {
+      "sha256": "df8ae2057db3c3d1c8f3197ecf53f964c3c0b014297012aeae822694b53e6980",
+      "bytes": 79
+    },
+    "tests/toy/exit0/exit0.plain.sha256": {
+      "sha256": "ab308cafab66d7dedeb030cc4d65871295a7d34a34a515b9d681c9d3bbd6e608",
+      "bytes": 78
+    },
+    "tests/toy/exit0/images/dune": {
+      "sha256": "27e53356561ca7a4c2f3fc97b446237435ccae29019d5ab4135f3acf29af8946",
+      "bytes": 556
+    },
+    "tests/toy/exit1/Images.v": {
+      "sha256": "75694a02c0cadb6a3de6316406cc372d2406c059367509c76694825af9fa4351",
+      "bytes": 714
+    },
+    "tests/toy/exit1/Statements.v": {
+      "sha256": "87a710f81e7b60ebb9a89c1de3a3701efb0ecb735817fabc856d20a8885f9996",
+      "bytes": 697
+    },
+    "tests/toy/exit1/dune": {
+      "sha256": "bbcc6773adf34b454f6d8313785357ed5bbc4f4764e25d626b8860b00eddda4b",
+      "bytes": 343
+    },
+    "tests/toy/exit1/exit1.plain.sha256": {
+      "sha256": "d308832b9fb5f24c0fedab8e4a01a1bd6b176885537186863158af32f7b51166",
+      "bytes": 78
+    },
+    "tests/toy/exit1/images/dune": {
+      "sha256": "bf70138e4d3f4cf7e6a321b50ba1614702afabe051988ff0cc466b650999256d",
+      "bytes": 341
+    },
+    "tests/toy/make_elf.py": {
+      "sha256": "eeaa870c8a5f9b9708fcdcb0bfda13d22548d10db50d5e0041f6e20dc1345090",
+      "bytes": 2457
+    },
+    "theories/Driver.v": {
+      "sha256": "8bd5100260d719add13e3ba3eb3ad7943520962a6dac8c55104318d4ad35bb9b",
+      "bytes": 8580
+    },
+    "theories/Images.v": {
+      "sha256": "5f70e70f18f06327c2ac2d3dd2b4aa6747804db4e4a09f10f9bd37a65a325bd8",
+      "bytes": 2781
+    },
+    "theories/Shapes.v": {
+      "sha256": "82b996cbc454c87866c42e4047864730f03f1a54add5d4ec60d15d852b137d7c",
+      "bytes": 24570
+    },
+    "theories/dune": {
+      "sha256": "374386cc4a626a49442932d6943fec2e7383272621408f201536d242bafd679e",
+      "bytes": 319
+    },
+    "toolchain/allowed-axioms.txt": {
+      "sha256": "8820b8fc82c03184f5822c52932531be058ca95d352195a68c530004616d5380",
+      "bytes": 4409
+    },
+    "toolchain/checker.Dockerfile": {
+      "sha256": "9025bf9fc3bacf23e5441827ccba2de2ca50f7d361e6d6c676b8d06c7336613e",
+      "bytes": 6936
+    },
+    "toolchain/toolchain.lock": {
+      "sha256": "9b7f1957afd5d134bcadd581c97f0a42543b36049be4c82074c3ddd119456bd2",
+      "bytes": 699
+    }
+  }
+}
