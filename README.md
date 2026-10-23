@@ -1,8 +1,9 @@
 # Superbee verification experiments
 
 Small, reproducible mathematical-proof experiments, kept outside the product repository and its
-normal CI. Initial status: experimental, source correspondence manually inspected, no TypeScript
-refinement proof and no independent semantic review yet.
+normal CI. Status: experimental. The initial retirement model has manual source correspondence; the new
+source-classifier experiment derives syntax from a shipped function under trusted restricted
+semantics. Neither is a full TypeScript/runtime refinement proof.
 
 The first experiment proves a focused journal-retirement rule with Lean 4.27.0. Given valid
 acknowledgement accounting, preserved local payloads, and acknowledged-only admission, one
@@ -13,6 +14,14 @@ The proof also contains a concrete payload-loss counterexample when the admissio
 bypassed, and a nonempty admitted retirement witness. This does not prove the complete lifecycle,
 backend atomicity, acknowledgement validity, or the shipped TypeScript implementation.
 
+## Source-derived implementation bridge
+
+The [classifier experiment](experiments/source-classifier/README.md) parses the actual shipped
+`isAuthorizationRefusal` function and derives the syntax consumed by a checked universal policy
+theorem. Independent policy, source mutants, kernel counterexamples, native replay and source
+staleness controls keep the connection inspectable. Parser/lowering and runtime-semantic adequacy
+remain trusted. The manual workflow has a separate standard-runner job; product CI is unchanged.
+
 ## Run
 
 Install elan, then the pinned toolchain if it is not already present:
@@ -22,7 +31,8 @@ elan toolchain install leanprover/lean4:v4.27.0
 python3 scripts/check.py --json-out .artifacts/check.json
 ```
 
-Python 3 and the Lean standard library suffice. Each subprocess has a 60-second limit. The checker
+For the retirement experiment, Python 3 and the Lean standard library suffice. The separate
+source bridge also uses Node and a pinned TypeScript parser in this repository only. Each subprocess has a 60-second limit. The checker
 compiles from source into a fresh temporary directory, audits all experiment theorem dependencies,
 and requires Lean to reject a deliberately false preservation claim. It permits only Lean's
 standard logical axioms, never proof placeholders or custom theorem assumptions introduced as axioms.

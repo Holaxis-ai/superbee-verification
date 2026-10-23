@@ -24,3 +24,36 @@ jobs:
         run: elan toolchain install leanprover/lean4:v4.27.0
       - name: Clean proof, axiom audit and expected rejection
         run: python3 scripts/check.py --json-out .artifacts/check.json
+  source-bridge:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read the pinned public product source; do not install or build it
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: a63eef111001974a89ce35a83759bbe183814a1c
+          path: .artifacts/product-source
+          sparse-checkout: packages/core/src/uncertain-write.ts
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24.22.1'
+      - name: Install the experiment's pinned parser
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Set up pinned Lean without automatic build or library caches
+        uses: leanprover/lean-action@24581d74d674803a25a81b10b059c5c0cdd344c6 # reviewed v1 commit
+        with:
+          auto-config: 'false'
+          build: 'false'
+          test: 'false'
+          lint: 'false'
+          use-github-cache: 'false'
+          use-mathlib-cache: 'false'
+      - name: Check source-derived claims, native replay, semantic mutants and drift
+        run: python3 scripts/check_bridge.py --source-file .artifacts/product-source/packages/core/src/uncertain-write.ts --json-out .artifacts/bridge-result.json

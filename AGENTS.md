@@ -5,7 +5,9 @@ source and normal CI live in Holaxis-ai/superbee; work coordination lives in the
 superbee-dev bundle. Do not initialize another bundle here or add a product CI dependency.
 
 Read README.md and experiments/journal-retirement/README.md before changing a theorem or claim.
-Use the pinned Lean version and python3 scripts/check.py; no Mathlib is required. Preserve
+Use the pinned Lean version and python3 scripts/check.py; no Mathlib is required. For source
+bridge work also read experiments/source-classifier/README.md and run its pinned-parser checker.
+Do not describe a source-derived semantic proof as verified TypeScript or binary execution. Preserve
 counterexamples and report axiom dependencies, exact inputs, failed attempts and scope limits.
 Do not use proof placeholders, custom axioms, or weaken an intended property to obtain a pass.
 A failed proof is not an implementation bug; a checked abstract theorem is not a TypeScript proof.
