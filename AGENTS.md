@@ -19,3 +19,11 @@ Proof checking does not replace independent review of statement usefulness and s
 
 Public proof work must not disclose exploitable production findings. Use the product repository's
 private security advisory route for sensitive findings; public records carry sanitized status only.
+
+For established-tool settlement work, read experiments/gillian-settlement/README.md and
+experiments/VERIFICATION-PATH.md. Use scripts/setup_gillian.py and scripts/check_settlement.py
+with the pinned archives/source. Preserve all four independent contract cases, real postcondition
+failures for the three semantic mutants, the equivalent-null-check passing control and exact
+input/tool identities. Do not label Gillian output as a Lean-kernel certificate. Keep compiler,
+model, verifier/solver, input-record and module/runtime assumptions visible. New targets must fit
+an established execution model without unreviewed language/runtime extensions.
