@@ -86,3 +86,10 @@ truthful host evidence, unbounded behavior or TypeScript refinement. Explicit fo
 reuse have a separate contract and are outside this automatic-retry model.
 
 Select `experiment=protocol` on the existing manual workflow. No product CI gate is added.
+
+## Published binary-proof capability
+
+The [Rocq/RISC-V checkpoint](experiments/rocq-binary-capability/README.md) prepares the published
+OSS Verify toy binary proofs and admission controls in one manual, isolated job. It qualifies
+tooling rather than proving Superbee or completing the substantial implementation milestone.
+Select `experiment=rocq` on the existing manual workflow; no product CI dependency is added.

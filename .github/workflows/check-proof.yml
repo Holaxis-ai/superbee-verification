@@ -11,6 +11,7 @@ on:
           - settlement
           - retry
           - protocol
+          - rocq
 permissions:
   contents: read
 jobs:
@@ -184,3 +185,62 @@ jobs:
           --source-root .artifacts/protocol-source
           --json-out .artifacts/protocol-result.json
           --evidence-dir .artifacts/protocol-evidence
+
+  rocq:
+    if: ${{ inputs.experiment == 'rocq' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    concurrency:
+      group: rocq-capability-${{ github.repository }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read only the pinned upstream core and tiny binary controls
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: theorem-labs/oss-verify-proofs
+          ref: 98e995d4daced70a0a4aa2c810854b88720735f1
+          path: .artifacts/rocq-upstream
+          sparse-checkout: |
+            /dune-project
+            /LICENSE
+            /release.yaml
+            /docs/checking.md
+            /theories/
+            /tests/
+            /toolchain/allowed-axioms.txt
+            /toolchain/checker.Dockerfile
+            /toolchain/toolchain.lock
+          sparse-checkout-cone-mode: false
+          fetch-depth: 1
+          persist-credentials: false
+      - name: Verify upstream revision and acquire only the exact public checker
+        run: |
+          git -C .artifacts/rocq-upstream rev-parse HEAD > .artifacts/rocq-upstream-revision.txt
+          test "$(cat .artifacts/rocq-upstream-revision.txt)" = 98e995d4daced70a0a4aa2c810854b88720735f1
+          timeout 600s docker pull ghcr.io/theorem-labs/oss-fuzz-theorems-checker@sha256:cc9ae43a9f4b0dd59d7c8d30727d36e039bfe72a2a9f9c4a99c68e413037e902
+      - name: Run unchanged upstream controls offline with bounded resources
+        run: >-
+          python3 scripts/check_rocq_capability.py
+          --source-root .artifacts/rocq-upstream
+          --evidence-dir .artifacts/rocq-evidence
+          --json-out .artifacts/rocq-result.json
+          --container-name superbee-rocq-${{ github.run_id }}-${{ github.run_attempt }}
+      - name: Remove the named container after failure or cancellation
+        if: ${{ always() }}
+        run: docker rm -f superbee-rocq-${{ github.run_id }}-${{ github.run_attempt }} 2>/dev/null || true
+      - name: Retain reports and control audits, excluding the build cache
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: rocq-capability-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            .artifacts/rocq-upstream-revision.txt
+            .artifacts/rocq-result.json
+            .artifacts/rocq-evidence/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 14
