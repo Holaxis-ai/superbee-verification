@@ -18,7 +18,7 @@ inductive Expr where
   | and (left right : Expr)
   | or (left right : Expr)
   | literal (value : Bool)
-  deriving Repr
+  deriving DecidableEq, Repr
 
 def read (input : Input) : Field → Option Text
   | .kind => some input.kind

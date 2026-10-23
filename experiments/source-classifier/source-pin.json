@@ -4,5 +4,15 @@
   "path": "packages/core/src/uncertain-write.ts",
   "sha256": "6979a61fda6f1245de1fdbf6bf2a8ee73139714984e52f6e30aed739aae7e0f4",
   "function": "isAuthorizationRefusal",
-  "binding": "AUTHORIZATION_REFUSAL_CODES"
+  "binding": "AUTHORIZATION_REFUSAL_CODES",
+  "declarationByteSpans": [
+    {
+      "start": 10267,
+      "end": 10480
+    },
+    {
+      "start": 10574,
+      "end": 10752
+    }
+  ]
 }

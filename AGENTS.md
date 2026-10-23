@@ -6,7 +6,8 @@ superbee-dev bundle. Do not initialize another bundle here or add a product CI d
 
 Read README.md and experiments/journal-retirement/README.md before changing a theorem or claim.
 Use the pinned Lean version and python3 scripts/check.py; no Mathlib is required. For source
-bridge work also read experiments/source-classifier/README.md and run its pinned-parser checker.
+bridge work also read experiments/source-classifier/README.md and run scripts/check_source_decode.py
+with the pinned source; it includes the pinned-parser checker and independent byte decoding.
 Do not describe a source-derived semantic proof as verified TypeScript or binary execution. Preserve
 counterexamples and report axiom dependencies, exact inputs, failed attempts and scope limits.
 Do not use proof placeholders, custom axioms, or weaken an intended property to obtain a pass.

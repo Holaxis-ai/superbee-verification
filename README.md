@@ -19,8 +19,9 @@ backend atomicity, acknowledgement validity, or the shipped TypeScript implement
 The [classifier experiment](experiments/source-classifier/README.md) parses the actual shipped
 `isAuthorizationRefusal` function and derives the syntax consumed by a checked universal policy
 theorem. Independent policy, source mutants, kernel counterexamples, native replay and source
-staleness controls keep the connection inspectable. Parser/lowering and runtime-semantic adequacy
-remain trusted. The manual workflow has a separate standard-runner job; product CI is unchanged.
+staleness controls keep the connection inspectable. An additional Lean decoder independently reconstructs syntax from exact declaration bytes and
+kernel-checks its equality with the external AST. Restricted grammar/semantic adequacy, acquisition,
+module context and runtime remain trusted. The manual workflow has a separate standard-runner job; product CI is unchanged.
 
 ## Run
 
