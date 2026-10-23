@@ -15,7 +15,16 @@ forgetting, retirement, new admission, request-ID reuse, predecessor chains, ind
 full same-key metadata, and document content/CAS are outside this slice. In particular, explicit
 forgetting after absence is not modeled as proof that a forgotten attempt cannot later apply.
 
-The persisted row has attempt, covered prefix, state and receipt. Each handle reads a snapshot. An
+The model's `Handles` are two logical workers with invocation-local wire tokens. They do not imply
+two independent file writers, nor that backend sessions isolate two clients sharing one actual journal
+handle. Product `claimedHere` belongs to the journal handle's session map, not the client object or
+individual invocation. Model token ownership additionally assumes callers report non-dispatch
+truthfully for their own invocation; the journal API is not proved to reject fabricated evidence
+from another client sharing the same handle. Logical worker token ownership is a caller/provenance
+abstraction, not an API security or cross-process locking guarantee. Crash/reopen conservatively
+models loss of local invocation authority; actual session/adapter lifetime correspondence is trusted.
+
+The persisted row has attempt, covered prefix, state and receipt. Each logical worker reads a snapshot. An
 atomic claim validates that complete modeled snapshot and the actual-current transition rule,
 increments the attempt once, and grants one local wire token with handle/session provenance.
 Invoking a dispatched wire consumes that token. Crash/reopen discards the token and changes session;
@@ -43,17 +52,26 @@ assumed for safety. It checks:
 - `TypeOK`: row/counter and selected ghost domains remain bounded and well typed.
 
 Four expected invariant counterexamples separately demonstrate reachability of initial submission,
-own pre-wire rollback followed by retry submission, a dispatched operation applying after its
+own pre-wire rollback with durable evidence followed by crash/reopen and retry submission, a dispatched operation applying after its
 owner crashed, and a pre-wire crash followed by lookup without new permission. These are deliberate
 false invariants over the correct model, not bugs or failed safety checks.
 
-The recovery configuration starts at an unknown, once-dispatched first attempt with lost local
-provenance. It checks eventual dispatch of attempt two in a **fault-free recovery epoch**: no new
-crashes, application outcomes or local cancellations, truthful host non-execution evidence for
-attempt one eventually available, and weak fairness of host evidence, each handle's snapshot
-refresh, the claim group and the wire group. It does not require both handles to win. Unknown/absent
-lookup alone is intentionally permitted to remain unresolved in the safety model. This is conditional
-non-execution retry recovery, not universal terminal settlement or unconditional liveness.
+The recovery configuration starts **after authentic non-execution evidence has already been
+persisted**, at pending attempt one/prefix one with lost local provenance. Attempt one has one
+historical dispatched invocation but independently cannot apply; a successful original invocation
+or callback supplied a typed host guarantee before reopen. The model does not assume a reopened
+lookup can reconstruct that guarantee. It checks eventual dispatch of attempt two in a **fault-free
+recovery epoch**: no new crashes, application outcomes or local cancellations, and weak fairness of
+each handle's snapshot refresh, the claim group and the wire group. It does not require both handles
+to win. The rollback/reopen/retry reachability control separately reaches durable local non-dispatch
+coverage from the normal initial state, crashes/reopens, then dispatches attempt two.
+
+Unknown/absent lookup alone is intentionally permitted to remain unresolved in the safety model.
+In current delivery code reopened lookup recognizes committed/refused results but does not recover
+typed deletion-hold evidence from other lookup outcomes. An unknown gap with lost local provenance
+therefore has **no progress guarantee from this experiment**. The checked progress property is retry
+from already persisted, authentic non-execution evidence, not universal terminal settlement or
+unconditional liveness. Truthfulness and durable retention of that initial evidence remain premises.
 
 ## Controls
 
@@ -65,11 +83,11 @@ non-execution retry recovery, not universal terminal settlement or unconditional
 | `absence-evidence` | Counterexample to `PrefixSound` |
 | `foreign-rollback` | Counterexample to `PrefixSound` after a dispatched invocation |
 | `initial-wire` | Counterexample to false `NoInitialWire` |
-| `rollback-retry` | Counterexample to false `NoRollbackRetry` |
+| `rollback-retry` | Counterexample to false `NoRollbackRetry` after durable rollback/reopen |
 | `crash-late-apply` | Counterexample to false `NoCrashLateApply` |
 | `crash-lookup` | Counterexample to false `NoCrashLookup` |
 | `recovery` | Complete temporal check, eventual retry dispatch |
-| `deny-recovery` | Temporal counterexample under the same recovery fairness |
+| `deny-recovery` | Temporal counterexample under the same persisted-evidence recovery fairness |
 
 The stale/blind mutation removes **both** complete-guard comparison and actual-current transition
 validation, deciding from a stale snapshot instead. It is not evidence that removing only the guard
@@ -93,7 +111,7 @@ This is manual correspondence, not extraction, compiler verification or a source
 | --- | --- | --- |
 | Eligible | `blob-journal.ts`, `blobIntentResendable` | Validated-record projection; does not authenticate evidence or guarantee claim success |
 | Snapshot/current Claim | `assertBlobGuardMatches`, `decideBlobUpdate`, `nextBlobIntentRecord` | Complete guard then independent actual-current increment/state/prefix validation; backend atomic execution assumed |
-| Handle/session and local evidence | `claimedInThisSession`, update session bookkeeping, `blobNonExecutionPatch` | Actual session bookkeeping and truthful carrier classification manually mapped, not verified |
+| Handle/session and local evidence | `claimedInThisSession`, update session bookkeeping, `blobNonExecutionPatch` | Actual backend-handle session map plus truthful invocation-local carrier classification manually mapped, not client-isolation proof |
 | Claim then Wire | `hosted-client/blob-write.ts`, `claimAndSubmit` | Await durable guarded update before delivery; admission/capability/hold gates outside model |
 | Unknown/absent lookup | `blob-write.ts` drive path and `blob-delivery.ts` explicit lookup | Lookup does not itself dispatch; wire after false gap would require explicit modeled mutation |
 | HostEvidence | typed `deletionHold` transition and delivery evidence | Exact-attempt typed correlation plus permanent non-application guarantee trusted; not generic absence |
@@ -132,12 +150,19 @@ collision risk and the Java/TLC runtime/checker remain trusted. No product CI is
 ## Initial local result
 
 Temurin21.0.9+10 aarch64 and the pinned TLC archive checked the final model. Safe and guard-only each
-explored 13,432 distinct states, with all safety checks passing. Recovery explored 77 distinct
-states and passed. The three semantic mutations, four reachability witnesses and denial control
-produced their required exact counterexamples. Total observed checker subprocess time was about
-7.4 seconds, excluding setup. Final exact input receipts and native CI are recorded with the PR.
+explored the full bounded graph with all safety checks passing. Persisted-evidence recovery also
+explored its complete temporal state graph and passed. The three semantic mutations, four reachability witnesses and denial control
+produced their required exact counterexamples. Exact state counts and subprocess timings, excluding setup, are recorded in the final run receipt
+and native CI associated with the reviewed commit.
 
 The first authoring run correctly failed its stale-claim negative control: an unparenthesized ghost
 conjunction accidentally restricted the action instead of recording unsafe history. The negative
 control exposed that vacuity; the corrected model explicitly parenthesizes the ghost Boolean RHS.
 That failed run and its raw output are retained in local evidence rather than represented as a pass.
+
+Independent review also corrected the first recovery configuration: it had started with an unknown
+attempt and assumed a fresh typed host guarantee would eventually become available after reopen.
+Current lookup does not provide that recovery route. The revised configuration starts from authentic
+non-execution evidence already durably persisted before reopen and removes host-evidence fairness.
+Prior results remain retained as superseded evidence, not evidence of current caller progress from
+an unknown gap. This correction changes the progress claim, not the safe model's evidence rule.

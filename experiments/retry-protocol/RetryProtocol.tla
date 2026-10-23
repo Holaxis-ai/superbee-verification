@@ -11,7 +11,7 @@ Record(a, p, s, r) == [attempt |-> a, prefix |-> p, state |-> s, receipt |-> r]
 Eligible(r) == ~r.receipt /\ r.state \in {"pending", "unknown"}
                /\ r.prefix = r.attempt
 Init ==
- /\ row = IF Recovery THEN Record(1,0,"unknown",FALSE)
+ /\ row = IF Recovery THEN Record(1,1,"pending",FALSE)
                          ELSE Record(0,0,"pending",FALSE)
  /\ seen = [h \in Handles |-> row]
  /\ session = [h \in Handles |-> IF Recovery THEN 1 ELSE 0]
@@ -19,7 +19,7 @@ Init ==
  /\ owner = [a \in Attempts |-> IF Recovery /\ a=1 THEN 1 ELSE 0]
  /\ ownerSession = [a \in Attempts |-> 0]
  /\ wires = [a \in Attempts |-> IF Recovery /\ a=1 THEN 1 ELSE 0]
- /\ mayApply = [a \in Attempts |-> Recovery /\ a=1]
+ /\ mayApply = [a \in Attempts |-> FALSE]
  /\ applied = [a \in Attempts |-> FALSE]
  /\ safeClaims = TRUE
  /\ events = {}
@@ -51,7 +51,7 @@ CrashReopen(h) ==
  /\ ~Recovery /\ session[h]=0
  /\ session' = [session EXCEPT ![h] = 1]
  /\ token' = [token EXCEPT ![h] = 0]
- /\ events' = events \cup {IF row.attempt \in Attempts /\ owner[row.attempt]=h /\ wires[row.attempt]>0 THEN IF row.attempt=1 THEN "crashAfterWire1" ELSE "crashAfterWire2" ELSE IF token[h]>0 THEN IF token[h]=1 THEN "crashBeforeWire1" ELSE "crashBeforeWire2" ELSE "otherCrash"}
+ /\ events' = events \cup {IF row.attempt \in Attempts /\ owner[row.attempt]=h /\ wires[row.attempt]>0 THEN IF row.attempt=1 THEN "crashAfterWire1" ELSE "crashAfterWire2" ELSE IF token[h]>0 THEN IF token[h]=1 THEN "crashBeforeWire1" ELSE "crashBeforeWire2" ELSE IF row.attempt=1 /\ row.prefix=1 /\ row.state="pending" THEN "durableEvidenceReopen" ELSE "otherCrash"}
  /\ UNCHANGED <<row,seen,owner,ownerSession,wires,mayApply,applied,safeClaims>>
 Unknown ==
  /\ row.state="in_flight"
@@ -102,7 +102,7 @@ Next == Claims \/ Wires \/ Unknown \/ AbsentLookup \/ HostEvidence \/ Receipt
         \/ (\E h \in Handles : Read(h) \/ CrashReopen(h) \/ NotDispatched(h))
         \/ (\E a \in Attempts : Apply(a))
 Spec == Init /\ [][Next]_vars
-RecoverySpec == Spec /\ WF_vars(HostEvidence) /\ WF_vars(Claims) /\ WF_vars(Wires)
+RecoverySpec == Spec /\ WF_vars(Claims) /\ WF_vars(Wires)
                 /\ \A h \in Handles : WF_vars(Read(h))
 TypeOK == /\ row.attempt \in 0..2 /\ row.prefix \in 0..row.attempt
           /\ row.state \in {"pending","in_flight","unknown","terminal"}
@@ -114,7 +114,7 @@ PrefixSound == \A a \in Attempts : a<=row.prefix => ~mayApply[a] /\ ~applied[a]
 AtMostOneWire == \A a \in Attempts : wires[a]<=1
 NoOverlappingApplications == ~ (applied[1] /\ applied[2])
 NoInitialWire == wires[1]=0
-NoRollbackRetry == ~("localRollback" \in events /\ wires[2]=1)
+NoRollbackRetry == ~("localRollback" \in events /\ "durableEvidenceReopen" \in events /\ wires[2]=1)
 NoCrashLateApply == ~("lateApply" \in events)
 NoCrashLookup == ~("lookupAfterCrash" \in events)
 RecoveredRetry == <> (wires[2]=1)
