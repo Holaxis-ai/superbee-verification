@@ -32,7 +32,9 @@ Qed.
 Lemma contained_spec xs ys : records_containedb xs ys = true <-> incl xs ys.
 Proof.
   unfold records_containedb, incl. rewrite forallb_forall.
-  split; intros H row Hin; apply memberb_spec; auto.
+  split; intros H row Hin.
+  - exact (proj1 (memberb_spec record_eq_dec row ys) (H row Hin)).
+  - exact (proj2 (memberb_spec record_eq_dec row ys) (H row Hin)).
 Qed.
 Lemma selected_spec i : selected_acknowledgedb i = true <->
   (forall id, In id (selected_ids i) -> exists row,
@@ -57,7 +59,7 @@ Proof.
   - tauto.
   - destruct (Nat.eq_dec key k) as [<-|Hne].
     + split; [discriminate|intros H; exfalso; apply H; now left].
-    + rewrite IH. simpl. tauto.
+    + rewrite IH. simpl. intuition congruence.
 Qed.
 Lemma lookup_some rows key value : NoDup (map fst rows) ->
   (lookup_meta key rows = Some value <-> In (key,value) rows).
@@ -87,8 +89,8 @@ Lemma metadata_guard_spec i : NoDup (map fst (actual_metadata i)) ->
       (expected_metadata i)).
 Proof.
   intros H. rewrite !Forall_forall. split; intros Hf premise Hin.
-  - apply (lookup_spec _ _ _ H), Hf, Hin.
-  - apply (lookup_spec _ _ _ H), Hf, Hin.
+  - exact (proj1 (lookup_spec _ _ _ H) (Hf premise Hin)).
+  - exact (proj2 (lookup_spec _ _ _ H) (Hf premise Hin)).
 Qed.
 Lemma admission_spec i : admissionb i = true <-> Allowed i.
 Proof.
@@ -134,7 +136,8 @@ Lemma unique_id rows x y : NoDup (map record_id rows) ->
 Proof.
   induction rows as [|head tail IH]; simpl; intros Hnd Hx Hy Heq; [contradiction|].
   inversion Hnd as [|h t Hnot Htail]; subst.
-  destruct Hx as [<-|Hx]; destruct Hy as [<-|Hy]; auto.
+  destruct Hx as [<-|Hx]; destruct Hy as [<-|Hy].
+  - reflexivity.
   - exfalso. apply Hnot. rewrite Heq. apply in_map. exact Hy.
   - exfalso. apply Hnot. rewrite <- Heq. apply in_map. exact Hx.
   - apply IH; assumption.
