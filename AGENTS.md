@@ -35,3 +35,12 @@ and denial controls, and the passing equivalent changed program. Keep bounded-re
 missing/undefined, descriptor/prototype, captured-valid versus reachable and caller/evidence limits
 explicit. Changes to shared gillian_runtime.py require the existing settlement regression. Do not
 turn a defensive null/receipt/state projection into a claimed reachable production bug.
+
+For the bounded retry protocol experiment, read experiments/retry-protocol/README.md and its
+source correspondence before modifying the model or claims. Use scripts/check_retry_protocol.py
+with the checksum-pinned TLC release. Preserve meaningful initial/recovery/crash witnesses,
+independent possible-application state, the semantic negative controls and useful positive recovery.
+Do not describe a bounded TLC pass as an unbounded mathematical proof or implementation refinement.
+Explicit forget, retirement and identity reuse remain outside the retained-request model. Guard
+and transition checks overlap: do not invent a source vulnerability by removing one check from
+an abstraction that has silently omitted the other. Keep fairness and evidence assumptions explicit.
