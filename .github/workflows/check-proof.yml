@@ -9,11 +9,12 @@ on:
         options:
           - lean
           - settlement
+          - retry
 permissions:
   contents: read
 jobs:
   check:
-    if: ${{ inputs.experiment != 'settlement' }}
+    if: ${{ inputs.experiment == 'lean' || inputs.experiment == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -34,7 +35,7 @@ jobs:
       - name: Clean proof, axiom audit and expected rejection
         run: python3 scripts/check.py --json-out .artifacts/check.json
   source-bridge:
-    if: ${{ inputs.experiment != 'settlement' }}
+    if: ${{ inputs.experiment == 'lean' || inputs.experiment == '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -99,3 +100,50 @@ jobs:
           --tool-dir .artifacts/gillian-tools
           --json-out .artifacts/settlement-result.json
           --evidence-dir .artifacts/settlement-evidence
+  retry:
+    if: ${{ inputs.experiment == 'retry' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read pinned retry source without installing or building product code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: 6092eaf6d16c8bf2c25d526cbbb768cfa07e9b72
+          path: .artifacts/retry-source
+          sparse-checkout: packages/core/src/blob-journal.ts
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - name: Read historical settlement source for shared-tool regression
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: a63eef111001974a89ce35a83759bbe183814a1c
+          path: .artifacts/settlement-source
+          sparse-checkout: packages/core/src/uncertain-write.ts
+          sparse-checkout-cone-mode: false
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '24.22.1'
+      - name: Install the experiment's existing pinned TypeScript compiler
+        run: npm ci --ignore-scripts --no-audit --no-fund
+      - name: Verify and extract existing pinned Gillian and Z3 archives
+        run: python3 scripts/setup_gillian.py --dir .artifacts/gillian-tools --pin experiments/gillian-settlement/toolchain.json
+      - name: Verify complete safe retry admission, mutants and equivalence
+        run: >-
+          python3 scripts/check_retry.py
+          --source-file .artifacts/retry-source/packages/core/src/blob-journal.ts
+          --tool-dir .artifacts/gillian-tools
+          --json-out .artifacts/retry-result.json
+          --evidence-dir .artifacts/retry-evidence
+      - name: Recheck settlement through shared tool validation
+        run: >-
+          python3 scripts/check_settlement.py
+          --source-file .artifacts/settlement-source/packages/core/src/uncertain-write.ts
+          --tool-dir .artifacts/gillian-tools
+          --json-out .artifacts/settlement-regression.json

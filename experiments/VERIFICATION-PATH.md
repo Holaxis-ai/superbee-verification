@@ -53,8 +53,10 @@ while preserving recovery when the shared head already names this write's own co
 real uncertainty/recovery decision. It does not prove that equal identifiers denote equal bytes,
 that authority replies are truthful, that the caller chooses this function or that storage is atomic.
 
-`blobIntentResendable` is a meaningful future admission candidate, but introduces optional/nullish
-and numeric domain obligations. It is not automatically qualified by this result. `refusalLeavesUnknown`
+The [safe retry experiment](gillian-retry/README.md) separately qualifies `blobIntentResendable`
+for equality/zero fallback on bounded safe-integer inputs and explicit optional-field shapes. It
+verifies 52 case partitions without adding an evaluator. It does not qualify general IEEE754
+arithmetic, claim increments, evidence provenance or async/storage behavior. `refusalLeavesUnknown`
 adds helper linkage and arbitrary-value presence semantics. The larger `captureRetireAcknowledged`
 entrypoint depends on capture/clone helpers, descriptors, arrays/Set, metadata checks, exceptions and
 matching state inside storage. Proving one local subexpression would not prove that whole entrypoint.

@@ -1,0 +1,11 @@
+{
+  "repository": "Holaxis-ai/superbee",
+  "commit": "6092eaf6d16c8bf2c25d526cbbb768cfa07e9b72",
+  "path": "packages/core/src/blob-journal.ts",
+  "sha256": "225aaaa8e6e148ad85d9a9ff2f32f6b96f95295faf4e8cecc96c3e283cfa029c",
+  "function": "blobIntentResendable",
+  "declarationByteSpan": {
+    "start": 33709,
+    "end": 33922
+  }
+}

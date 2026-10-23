@@ -1,0 +1,610 @@
+{
+  "procedure": "blobIntentResendable",
+  "caseCount": 52,
+  "cases": [
+    {
+      "name": "pending-receipt-missing-prefix-missing-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-prefix-missing-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-prefix-undefined-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-prefix-undefined-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-prefix-null-zero",
+      "expected": true,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-prefix-null-positive",
+      "expected": false,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-numeric-covered",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-numeric-gap",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-missing-numeric-overrun",
+      "expected": false,
+      "domain": "defensive-prefix-overrun",
+      "failsFor": [
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-missing-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-missing-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-undefined-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-undefined-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-null-zero",
+      "expected": true,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-prefix-null-positive",
+      "expected": false,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-numeric-covered",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-numeric-gap",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-missing-numeric-overrun",
+      "expected": false,
+      "domain": "defensive-prefix-overrun",
+      "failsFor": [
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-missing-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-missing-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-undefined-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-undefined-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-null-zero",
+      "expected": true,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-prefix-null-positive",
+      "expected": false,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-numeric-covered",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-numeric-gap",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "pending-receipt-undefined-numeric-overrun",
+      "expected": false,
+      "domain": "defensive-prefix-overrun",
+      "failsFor": [
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-missing-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-missing-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-undefined-zero",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-undefined-positive",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-null-zero",
+      "expected": true,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-prefix-null-positive",
+      "expected": false,
+      "domain": "defensive-null-prefix",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-numeric-covered",
+      "expected": true,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "always-deny",
+        "unknown-to-inflight"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-numeric-gap",
+      "expected": false,
+      "domain": "captured-field-domain",
+      "failsFor": [
+        "gap-admission",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "unknown-receipt-undefined-numeric-overrun",
+      "expected": false,
+      "domain": "defensive-prefix-overrun",
+      "failsFor": [
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-missing-prefix-missing",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-missing-prefix-undefined",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-missing-prefix-null",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-missing-prefix-numeric",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-undefined-prefix-missing",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-undefined-prefix-undefined",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-undefined-prefix-null",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "nonactive-receipt-undefined-prefix-numeric",
+      "expected": false,
+      "domain": "broader-state-field-domain",
+      "failsFor": [
+        "unknown-to-inflight",
+        "state-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-object-prefix-missing",
+      "expected": false,
+      "domain": "broader-receipt-field-domain",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-object-prefix-undefined",
+      "expected": false,
+      "domain": "broader-receipt-field-domain",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-object-prefix-null",
+      "expected": false,
+      "domain": "broader-receipt-field-domain",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-object-prefix-numeric",
+      "expected": false,
+      "domain": "broader-receipt-field-domain",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-null-prefix-missing",
+      "expected": false,
+      "domain": "defensive-null-receipt",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-null-prefix-undefined",
+      "expected": false,
+      "domain": "defensive-null-receipt",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-null-prefix-null",
+      "expected": false,
+      "domain": "defensive-null-receipt",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    },
+    {
+      "name": "receipt-null-prefix-numeric",
+      "expected": false,
+      "domain": "defensive-null-receipt",
+      "failsFor": [
+        "receipt-bypass",
+        "always-allow"
+      ]
+    }
+  ],
+  "variants": [
+    {
+      "name": "base",
+      "failedCases": []
+    },
+    {
+      "name": "gap-admission",
+      "failedCases": [
+        1,
+        3,
+        5,
+        7,
+        10,
+        12,
+        14,
+        16,
+        19,
+        21,
+        23,
+        25,
+        28,
+        30,
+        32,
+        34
+      ]
+    },
+    {
+      "name": "always-deny",
+      "failedCases": [
+        0,
+        2,
+        4,
+        6,
+        9,
+        11,
+        13,
+        15,
+        18,
+        20,
+        22,
+        24,
+        27,
+        29,
+        31,
+        33
+      ]
+    },
+    {
+      "name": "always-allow",
+      "failedCases": [
+        1,
+        3,
+        5,
+        7,
+        8,
+        10,
+        12,
+        14,
+        16,
+        17,
+        19,
+        21,
+        23,
+        25,
+        26,
+        28,
+        30,
+        32,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ]
+    },
+    {
+      "name": "unknown-to-inflight",
+      "failedCases": [
+        9,
+        11,
+        13,
+        15,
+        27,
+        29,
+        31,
+        33,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    {
+      "name": "receipt-bypass",
+      "failedCases": [
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51
+      ]
+    },
+    {
+      "name": "state-bypass",
+      "failedCases": [
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43
+      ]
+    },
+    {
+      "name": "equivalent-state-order",
+      "failedCases": []
+    }
+  ]
+}
