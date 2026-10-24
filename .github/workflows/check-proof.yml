@@ -13,6 +13,7 @@ on:
           - protocol
           - rocq
           - rocq-cycle
+          - retirement-production
       cycle_candidate:
         description: Candidate selection for manual Rocq work cycle only
         type: choice
@@ -311,3 +312,54 @@ jobs:
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 14
+
+  retirement-production:
+    if: ${{ inputs.experiment == 'retirement-production' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    concurrency:
+      group: production-retirement-pilot-${{ github.repository }}
+      cancel-in-progress: false
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - name: Read the exact product implementation without repository credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: Holaxis-ai/superbee
+          ref: 2d856c492f146a14e71ee2aafac3f4bc593fe942
+          path: .artifacts/production-source
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '26.12.1'
+      - name: Install and build the frozen product normally
+        working-directory: .artifacts/production-source
+        run: |
+          npm ci --no-audit --no-fund
+          npm run build
+      - name: Acquire only the exact published Rocq checker
+        run: timeout 600s docker pull ghcr.io/theorem-labs/oss-fuzz-theorems-checker@sha256:cc9ae43a9f4b0dd59d7c8d30727d36e039bfe72a2a9f9c4a99c68e413037e902
+      - name: Observe actual adapters and check finite correspondences
+        env:
+          RETIREMENT_RUN_LABEL: ${{ github.run_id }}-${{ github.run_attempt }}
+        run: >-
+          python3 scripts/check_production_retirement.py
+          --source-root .artifacts/production-source
+          --evidence-dir .artifacts/production-retirement/evidence
+          --json-out .artifacts/production-retirement/result.json
+      - name: Remove only this job's proof containers after cancellation
+        if: ${{ always() }}
+        run: |
+          docker ps -aq --filter "label=superbee.production-retirement=${{ github.run_id }}-${{ github.run_attempt }}" | xargs -r docker rm -f
+      - name: Retain exact observations, projections, source controls and diagnostics
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: production-retirement-pilot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: .artifacts/production-retirement/
+          include-hidden-files: true
+          retention-days: 14
+          if-no-files-found: warn
