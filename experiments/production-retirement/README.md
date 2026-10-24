@@ -83,8 +83,11 @@ equivalent adapter case file must compile successfully and report exactly `Close
 context` for the proved reference. Each mutant's file for **each adapter** must fail at a native
 computed-equality contradiction (`Unable to unify`), after successful Node/compiler execution and
 an actual observed law deviation. A filename, syntax, source-pin or setup failure is not accepted
-as the expected counterexample. The finite examples do not complete the broader substantial
-production-implementation or proof-transfer milestone.
+as the expected counterexample. Each mutant file stops at its first native counterexample. Thus all 168 operations execute in Node;
+the four baseline/equivalent files check 56 complete cases in Rocq, and eight mutant files must
+produce their respective semantic witnesses. This does not claim all 168 examples finish kernel
+checking. The finite examples do not complete the broader substantial production-implementation
+or proof-transfer milestone.
 
 ## Reproduce
 
@@ -101,6 +104,9 @@ python3 scripts/check_production_retirement.py \
   --evidence-dir .artifacts/retirement-pilot/evidence \
   --json-out .artifacts/retirement-pilot/result.json --node-only
 ```
+
+The checker refuses optimized Python (`-O` or `PYTHONOPTIMIZE`) before any work because assertions
+enforce source, projection and native acceptance checks.
 
 `--node-only` records observations and generates cases, reporting
 `observations_ready_unchecked_by_rocq`. It never reports native Rocq acceptance. Omit it only on a

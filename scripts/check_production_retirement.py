@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
 """Finite actual-adapter observations checked against a proved typed decision."""
+# Assertions enforce source/projection/native acceptance, including on module import.
+if not __debug__:
+    raise SystemExit('Optimized Python disables required checks; run without -O/PYTHONOPTIMIZE')
+
 import argparse
 import hashlib
 import json
