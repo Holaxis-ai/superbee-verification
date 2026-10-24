@@ -319,6 +319,20 @@ def main():
                 pass
         for sig, handler in handlers.items():
             signal.signal(sig, handler)
+        # A failed observer may leave its private graph copy or dependency link.
+        # Remove only fixed children of this newly-created evidence directory.
+        for variant in VARIANTS:
+            folder = evidence/'observations'/variant
+            if folder.is_symlink():
+                continue
+            dependency = folder/'node_modules'
+            if dependency.is_symlink():
+                dependency.unlink()
+            graph = folder/'dist'
+            if graph.is_symlink():
+                graph.unlink()
+            elif graph.is_dir():
+                shutil.rmtree(graph)
         report['seconds'] = round(time.monotonic()-start, 3)
         report['evidence_sha256'] = {str(p.relative_to(evidence)): sha(p) for p in evidence.rglob('*') if p.is_file() and not p.is_symlink()}
         args.json_out.write_text(json.dumps(report, indent=2)+'\n')

@@ -359,7 +359,15 @@ jobs:
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: production-retirement-pilot-${{ github.run_id }}-${{ github.run_attempt }}
-          path: .artifacts/production-retirement/
+          path: |
+            .artifacts/production-retirement/result.json
+            .artifacts/production-retirement/evidence/*.log
+            .artifacts/production-retirement/evidence/observations/observations.json
+            .artifacts/production-retirement/evidence/observations/*/*.ts
+            .artifacts/production-retirement/evidence/cases/*.v
+            .artifacts/production-retirement/evidence/cases/*.json
+            .artifacts/production-retirement/evidence/rocq/*.log
+            .artifacts/production-retirement/evidence/rocq/*.exit
           include-hidden-files: true
           retention-days: 14
           if-no-files-found: warn
